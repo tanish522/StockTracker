@@ -5,16 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import LandingPage from "./pages/LandingPage";
 
 // for react bootstrap
-import "../node_modules/react-bootstrap/dist/react-bootstrap";
+// import "../node_modules/react-bootstrap/dist/react-bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <Header></Header>
-        <App />
+        {/* <App /> */}
+        <LandingPage></LandingPage>
         <Footer></Footer>
     </React.StrictMode>
 );
