@@ -1,0 +1,44 @@
+.main {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background-image: url(../../images/background3.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.intro-text {
+    text-align: center;
+    color: #000;
+}
+
+.title {
+    font-size: 90px;
+}
+
+.subtitle {
+    font-size: 25px;
+    padding-top: 10px;
+}
+
+.buttonContainer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.landingButton {
+    width: 150px;
+    height: 50px;
+    margin: 0 50px;
+}
+
+@media only screen and (max-width: 768px) {
+    .title {
+        font-size: 60px;
+    }
+    .subtitle {
+        font-size: 20px;
+        padding-top: 10px;
+    }
+}
