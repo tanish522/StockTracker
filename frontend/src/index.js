@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
+import About from "./pages/About";
 
 // for react bootstrap
 // import "../node_modules/react-bootstrap/dist/react-bootstrap";
@@ -14,9 +16,15 @@ import "../node_modules/bootstrap/dist/css/bootstrap.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <Header></Header>
         {/* <App /> */}
-        <LandingPage></LandingPage>
+        {/* <LandingPage></LandingPage> */}
+        <BrowserRouter>
+            <Header></Header>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/about" element={<About />} />
+            </Routes>
+        </BrowserRouter>
         <Footer></Footer>
     </React.StrictMode>
 );
