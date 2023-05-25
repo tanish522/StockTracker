@@ -42,3 +42,19 @@
         padding-top: 10px;
     }
 }
+
+@media only screen and (max-width: 415px) {
+    .main {
+        width: 100%;
+    }
+    .title {
+        font-size: 28px;
+    }
+    .subtitle {
+        font-size: 20px;
+        padding-top: 5px;
+    }
+    .landingButton {
+        margin: 0px 20px;
+    }
+}
