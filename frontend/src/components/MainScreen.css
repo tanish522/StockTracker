@@ -1,0 +1,7 @@
+.mainBack {
+    min-height: 90vh;
+    display: flex;
+    padding: 10px 0;
+    font-family: Arial;
+    width: 100%;
+}
