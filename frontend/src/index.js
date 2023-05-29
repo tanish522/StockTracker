@@ -5,14 +5,14 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
 
 // for react bootstrap
 // import "../node_modules/react-bootstrap/dist/react-bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
-import Portfolio from "./pages/Portfolio";
-import About from "./pages/About";
-import AddStocks from "./pages/AddStocks";
+import LandingPage from "./screens/LandingPage";
+import Portfolio from "./screens/Portfolio";
+import About from "./screens/About";
+import AddStocks from "./screens/AddStocks";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
