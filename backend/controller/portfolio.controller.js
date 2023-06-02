@@ -6,9 +6,14 @@ const insertPortfolio = async () => {
     try {
         // creating object for document/data
         const p1 = new Portfolio({
-            stockId: 2,
-            buyPrice: 300,
-            buyQyantity: 200,
+            UserId: 2,
+            stocks: [
+                {
+                    stockId: 2,
+                    buyPrice: 300,
+                    buyQyantity: 200,
+                },
+            ],
         });
         // save() - inserting document/data
         const result = await p1.save();
@@ -18,19 +23,17 @@ const insertPortfolio = async () => {
     }
 };
 
-const getPortfolio = async () => {
+const getPortfolio = async (req, res) => {
     try {
         // running find querry to get data
-        const result = await Portfolio.find({ stockId: 1 }).select({
+        const result = await Portfolio.find({ UserId: 2 }).select({
             buyPrice: 1,
         });
-        console.log(result);
+        res.send(result);
     } catch (error) {
         console.log(error);
     }
 };
-
-// insertDocument();
 
 module.exports = {
     insertPortfolio,

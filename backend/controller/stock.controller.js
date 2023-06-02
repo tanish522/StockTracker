@@ -17,10 +17,10 @@ const insertStocks = async () => {
     }
 };
 
-const getStocks = async () => {
+const getStocks = async (req, res) => {
     try {
         const result = await Stock.find().populate("sectorId");
-        console.log(result);
+        res.send(result);
     } catch (error) {
         console.log(error);
     }

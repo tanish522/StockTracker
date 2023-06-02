@@ -18,10 +18,10 @@ const insertUser = async () => {
     }
 };
 
-const getUser = async () => {
+const getUser = async (req, res) => {
     try {
         const result = await User.find().populate("portfolioId");
-        console.log(result);
+        res.send(result);
     } catch (error) {
         console.log(error);
     }

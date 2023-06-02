@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // creating schema
 const userSchema = mongoose.Schema({
-    Username: {
+    username: {
         type: String,
         required: true,
     },
@@ -10,11 +10,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    Password: {
+    password: {
         type: String,
         required: true,
     },
-    PortfolioId: {
+    portfolioId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Portfolio",
     },
