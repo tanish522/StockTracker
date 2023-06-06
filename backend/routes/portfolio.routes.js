@@ -7,6 +7,6 @@ const {
 
 router.post("/", insertPortfolio);
 
-router.get("/", getPortfolio);
+router.get("/:id", getPortfolio);
 
 module.exports = router;

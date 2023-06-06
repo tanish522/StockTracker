@@ -1,18 +1,10 @@
 const User = require("../models/user");
 
-const insertUser = async () => {
+const insertUser = async (req, res) => {
     try {
-        // creating object for document/data;
-        // save() - inserting document/data
-
-        const u = new User({
-            userName: "tanish",
-            email: "tanishp2020@gmail.com",
-            password: "tanish123",
-            portfolioId: "64720e538305129d2d4fdf5d",
-        });
-        const result = await u.save();
-        console.log(result);
+        const body = User(req.body);
+        const result = await body.save();
+        res.send(result);
     } catch (error) {
         console.log(error);
     }

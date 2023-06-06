@@ -2,22 +2,12 @@ const Portfolio = require("../models/portfolio");
 
 // creating collections using imported models (Stock)
 
-const insertPortfolio = async () => {
+const insertPortfolio = async (req, res) => {
     try {
-        // creating object for document/data
-        const p1 = new Portfolio({
-            UserId: 2,
-            stocks: [
-                {
-                    stockId: 2,
-                    buyPrice: 300,
-                    buyQyantity: 200,
-                },
-            ],
-        });
-        // save() - inserting document/data
-        const result = await p1.save();
-        console.log(result);
+        // creating Portfolio object for storing document/data
+        const body = new Portfolio(req.body);
+        const result = await body.save();
+        res.send(result);
     } catch (error) {
         console.log(error);
     }
@@ -25,10 +15,8 @@ const insertPortfolio = async () => {
 
 const getPortfolio = async (req, res) => {
     try {
-        // running find querry to get data
-        const result = await Portfolio.find({ UserId: 2 }).select({
-            buyPrice: 1,
-        });
+        const id = req.params.id;
+        const result = await Portfolio.find({ UserId: id });
         res.send(result);
     } catch (error) {
         console.log(error);

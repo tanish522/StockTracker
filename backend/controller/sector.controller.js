@@ -15,6 +15,7 @@ const insertSector = async (req, res) => {
 
 const getSector = async (req, res) => {
     try {
+        // run find querry to get data
         const result = await Sector.find();
         res.send(result); // sending json obj to route
     } catch (error) {
