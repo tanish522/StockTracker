@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 // creating schema
 const portfolioSchema = mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
     stocks: [
         {
             stockId: {
@@ -33,12 +29,10 @@ const portfolioSchema = mongoose.Schema({
 
     totalInvestment: {
         type: Number,
-        required: true,
     },
 
     totalPnL: {
         type: Number,
-        required: true,
     },
 });
 

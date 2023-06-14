@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const { insertPortfolio } = require("../controller/portfolio.controller");
+const Portfolio = require("../models/portfolio");
 
 const insertUser = async (req, res) => {
     try {
@@ -19,7 +21,22 @@ const getUser = async (req, res) => {
     }
 };
 
+const signUp = async (req, res) => {
+    try {
+        const portfolioBody = Portfolio({});
+        const portfolio = await portfolioBody.save();
+        const id = portfolio._id;
+        req.body.portfolioId = id; // adding portfolio id as foreign key to user obj
+        const body = User(req.body);
+        const result = await body.save();
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     insertUser,
     getUser,
+    signUp,
 };

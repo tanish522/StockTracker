@@ -4,7 +4,6 @@ const uri =
 // function to connect our server with our db
 async function connect() {
     try {
-        console.log("try");
         const db = await mongoose.connect(uri);
         console.log("connected to mongoose");
     } catch (error) {

@@ -1,17 +1,13 @@
 const Stock = require("../models/stock");
 
-const insertStocks = async () => {
+const insertStocks = async (req, res) => {
     try {
         // creating object for document/data;
         // save() - inserting document/data
 
-        const s = new Stock({
-            stockName: "infy",
-            price: 1400,
-            sectorId: "647351d1c1dcb35dabc15842",
-        });
-        const result = await s.save();
-        console.log(result);
+        const body = new Stock(req.body); // sending body data in json obj format
+        const result = await body.save();
+        req.send(result);
     } catch (error) {
         console.log(error);
     }
