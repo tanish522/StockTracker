@@ -4,15 +4,15 @@ const mongoose = require("mongoose");
 const portfolioSchema = mongoose.Schema({
     stocks: [
         {
-            stockId: {
-                type: mongoose.Schema.Types.ObjectId,
+            stockName: {
+                type: String,
                 ref: "Stock",
             },
             buyPrice: {
                 type: Number,
                 required: true,
             },
-            buyQyantity: {
+            buyQuantity: {
                 type: Number,
                 required: true,
             },
@@ -22,7 +22,6 @@ const portfolioSchema = mongoose.Schema({
             },
             profitLoss: {
                 type: Number,
-                required: true,
             },
         },
     ],

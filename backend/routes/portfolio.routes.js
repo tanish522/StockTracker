@@ -2,11 +2,10 @@ const express = require("express");
 const router = express.Router();
 const {
     insertPortfolio,
-    getPortfolio,
+    addStockToPortfolio,
 } = require("../controller/portfolio.controller");
 
 router.post("/", insertPortfolio);
-
-router.get("/:id", getPortfolio);
+router.put("/addStock/:id", addStockToPortfolio);
 
 module.exports = router;

@@ -8,20 +8,49 @@ const Header = () => {
             <Container>
                 <Navbar.Brand>
                     {/* This / is a route which will navigate page to specified element in index.js */}
-                    <Link to="/"> Stock Tracker</Link>
+                    <Link
+                        to="/"
+                        style={{ color: "inherit", textDecoration: "inherit" }}
+                    >
+                        {" "}
+                        Stock Tracker
+                    </Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link>
-                            <Link to="/portfolio">Portfolio</Link>
+                            <Link
+                                to="/portfolio"
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "inherit",
+                                }}
+                            >
+                                Portfolio
+                            </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to="/add-stock">Add Stocks</Link>
+                            <Link
+                                to="/stock"
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "inherit",
+                                }}
+                            >
+                                Stocks
+                            </Link>
                         </Nav.Link>
-                        <Nav.Link href="#link">Charts</Nav.Link>
                         <Nav.Link>
-                            <Link to="/about">About</Link>
+                            <Link
+                                to="/about"
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "inherit",
+                                }}
+                            >
+                                About
+                            </Link>
                         </Nav.Link>
                         <NavDropdown title="Tanish" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">
