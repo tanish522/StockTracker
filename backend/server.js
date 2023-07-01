@@ -11,10 +11,15 @@ const sectorRoutes = require("./routes/sector.routes");
 const userRoutes = require("./routes/user.routes.js");
 const stockRoutes = require("./routes/stock.routes.js");
 const authRoutes = require("./routes/auth.routes.js");
+const { notFound, errorHandler } = require("./middlewares/errorMiddleware.js");
 
 app.use("/sector", sectorRoutes);
 app.use("/user", userRoutes);
 app.use("/stock", stockRoutes);
 app.use("/auth", authRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
 
 app.listen(5000, console.log(`Server listening at http://localhost:${PORT}`));

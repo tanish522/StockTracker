@@ -13,6 +13,8 @@ import LandingPage from "./screens/LandingPage";
 import Portfolio from "./screens/Portfolio";
 import About from "./screens/About";
 import AddStocks from "./screens/AddStocks";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +23,9 @@ root.render(
             <Header></Header>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginScreen />} />
+                <Route path="/register" element={<RegisterScreen />} />
+
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/add-stock" element={<AddStocks />} />
