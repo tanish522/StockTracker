@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Button } from "react-bootstrap";
 import "./LandingPage.css";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
     return (
@@ -15,7 +16,7 @@ const LandingPage = () => {
                             </p>
                         </div>
                         <div className="buttonContainer">
-                            <a href="#login">
+                            <Link to="/login">
                                 <Button
                                     variant="outline-dark"
                                     size="lg"
@@ -23,9 +24,9 @@ const LandingPage = () => {
                                 >
                                     <b>Login</b>
                                 </Button>
-                            </a>
+                            </Link>
 
-                            <a href="#signup">
+                            <a href="./signup">
                                 <Button
                                     variant="outline-dark"
                                     size="lg"

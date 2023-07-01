@@ -6,6 +6,8 @@ const {
     getPortfolioByUserId,
 } = require("../controller/user.controller");
 
+
+
 router.get("/", getUser);
 
 router.post("/", insertUser);
