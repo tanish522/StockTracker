@@ -11,11 +11,8 @@ const sectorRoutes = require("./routes/sector.routes");
 const userRoutes = require("./routes/user.routes.js");
 const stockRoutes = require("./routes/stock.routes.js");
 const authRoutes = require("./routes/auth.routes.js");
-<<<<<<< HEAD
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware.js");
-=======
 const portfolioRoutes = require("./routes/portfolio.routes.js");
->>>>>>> dd9d84027f0968138e2c353bcd0b5c3532e820ee
 
 app.use("/sector", sectorRoutes);
 app.use("/user", userRoutes);
@@ -25,6 +22,5 @@ app.use("/portfolio", portfolioRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
-
 
 app.listen(5000, console.log(`Server listening at http://localhost:${PORT}`));
