@@ -21,6 +21,19 @@ const getUser = async (req, res) => {
     }
 };
 
+const getPortfolioByUserId = async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const result = await User.find({ _id: id })
+            .populate("portfolioId")
+            .select("portfolioId");
+        res.send(result);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const signUp = async (req, res) => {
     try {
         const portfolioBody = Portfolio({});
@@ -39,4 +52,5 @@ module.exports = {
     insertUser,
     getUser,
     signUp,
+    getPortfolioByUserId,
 };
