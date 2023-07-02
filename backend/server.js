@@ -25,5 +25,4 @@ app.use("/portfolio", portfolioRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-
 app.listen(5000, console.log(`Server listening at http://localhost:${PORT}`));

@@ -2,41 +2,43 @@ import { useState } from "react";
 import MainScreen from "../components/MainScreen";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
-var Link = require('react-router-dom').Link;
-
+var Link = require("react-router-dom").Link;
 
 const LoginScreen = () => {
-
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const submitHandler = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         try {
             const config = {
                 headers: {
-                    "Content-type": "application/json"
-                }
-            }
-            setLoading(true)
+                    "Content-type": "application/json",
+                },
+            };
+            setLoading(true);
 
-            const { data } = await axios.post('http://localhost:5000/auth/login', {
-                email, password
-            }, config);
+            const { data } = await axios.post(
+                "http://localhost:5000/auth/login",
+                {
+                    email,
+                    password,
+                },
+                config
+            );
 
-            localStorage.setItem('userInfo', JSON.stringify(data));
-            setLoading(false)
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            setLoading(false);
         } catch (error) {
             setError(error.response.data.message);
         }
-    }
-    console.log("login screen paege")
+    };
+    console.log("login screen paege");
     return (
-
-        <MainScreen title='LOGIN'>
+        <MainScreen title="LOGIN">
             <div className="loginContainer">
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicEmail">
@@ -59,18 +61,18 @@ const LoginScreen = () => {
                         />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Button className="mt-3" variant="primary" type="submit">
                         Submit
                     </Button>
 
                     <Row className="py-3">
                         <Col>
-                            New Customer ? <Link to="/register"> Register Here </Link>
+                            New Customer ?{" "}
+                            <Link to="/register"> Register Here </Link>
                         </Col>
                     </Row>
                 </Form>
             </div>
-
         </MainScreen>
     );
 };

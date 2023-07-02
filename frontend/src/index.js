@@ -12,6 +12,8 @@ import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import LandingPage from "./screens/LandingPage";
 import Portfolio from "./screens/Portfolio";
 import About from "./screens/About";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 import Stocks from "./screens/Stocks";
 
