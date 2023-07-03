@@ -11,7 +11,9 @@ const sectorRoutes = require("./routes/sector.routes");
 const userRoutes = require("./routes/user.routes.js");
 const stockRoutes = require("./routes/stock.routes.js");
 const authRoutes = require("./routes/auth.routes.js");
+
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware.js");
+
 const portfolioRoutes = require("./routes/portfolio.routes.js");
 
 app.use("/sector", sectorRoutes);
