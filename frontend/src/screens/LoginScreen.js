@@ -1,45 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainScreen from "../components/MainScreen";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import './LoginScreen.css';
+import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 var Link = require("react-router-dom").Link;
 
+
+
 const LoginScreen = () => {
+    const history = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
+
     const submitHandler = async (e) => {
         e.preventDefault();
+        console.log(email, password);
 
         try {
             const config = {
                 headers: {
-                    "Content-type": "application/json",
-                },
-            };
-            setLoading(true);
+                    "Content-type": "application/json"
+                }
+            }
+            setLoading(true)
 
             const { data } = await axios.post(
-                "http://localhost:5000/auth/login",
+                'http://localhost:5000/auth/login',
                 {
                     email,
                     password,
                 },
                 config
             );
-
-            localStorage.setItem("userInfo", JSON.stringify(data));
+            console.log(data);
+            localStorage.setItem('userInfo', JSON.stringify(data));
             setLoading(false);
         } catch (error) {
             setError(error.response.data.message);
+            setLoading(false);
         }
     };
-    console.log("login screen paege");
     return (
         <MainScreen title="LOGIN">
             <div className="loginContainer">
+                {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+                {loading && <Loading />}
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email Address</Form.Label>

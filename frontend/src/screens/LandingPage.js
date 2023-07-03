@@ -4,6 +4,15 @@ import "./LandingPage.css";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
+
+    // useEffect(() => {
+    //     const userInfo = localStorage.getItem("userInfo");
+    //     if (userInfo) {
+    //         history("/portfolio");
+    //     }
+
+    // }, [history]);
+
     return (
         <div className="main">
             <Container>
@@ -26,7 +35,7 @@ const LandingPage = () => {
                                 </Button>
                             </Link>
 
-                            <a href="./signup">
+                            <a href="./register">
                                 <Button
                                     variant="outline-dark"
                                     size="lg"
