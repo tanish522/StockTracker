@@ -97,8 +97,29 @@ const AddStocks = () => {
     // to fetch stock list from db
     const fetchStock = async () => {
         const data = await axios.get("http://localhost:5000/stock");
+        // data.data.sort((a, b) => {
+        //     return a.symbol - b.symbol;
+        // });
+        data.data.sort(dynamicSort("symbol"));
+        console.log(data.data);
         setStock(data.data);
     };
+    function dynamicSort(property) {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a, b) {
+            var result =
+                a[property] < b[property]
+                    ? -1
+                    : a[property] > b[property]
+                    ? 1
+                    : 0;
+            return result * sortOrder;
+        };
+    }
 
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
@@ -128,16 +149,34 @@ const AddStocks = () => {
             <MainScreen title="Stocks">
                 <div>
                     {stocks.map((stock) => (
-                        <ListGroup key={stock._id}>
-                            <ListGroup.Item className="d-flex justify-content-between align-items-start mt-3">
-                                <h4>{stock.stockName}</h4>
-
-                                <Button
-                                    variant="success"
-                                    onClick={openForm(stock.stockName)}
-                                >
-                                    Add Stock
-                                </Button>
+                        <ListGroup key={stock.symbol}>
+                            <ListGroup.Item className="d-flex justify-content-between align-items-start-baseline mt-1">
+                                <div>
+                                    <p style={{ margin: 0 }}>
+                                        {" "}
+                                        Symbol: {stock.symbol}
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                        {" "}
+                                        Price: {stock.previousClose}
+                                    </p>
+                                </div>
+                                <span style={{ display: "flex" }}>
+                                    <Button
+                                        variant="secondary"
+                                        size="md"
+                                        className="me-2"
+                                    >
+                                        More Details
+                                    </Button>
+                                    <Button
+                                        variant="success"
+                                        onClick={openForm(stock.symbol)}
+                                        size="md"
+                                    >
+                                        Add Stock
+                                    </Button>
+                                </span>
                             </ListGroup.Item>
                         </ListGroup>
                     ))}
