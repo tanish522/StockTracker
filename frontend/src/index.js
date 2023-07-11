@@ -29,7 +29,7 @@ root.render(
 
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/stock" element={<Stocks />} />
+                <Route path="/stock/*" element={<Stocks />} />
             </Routes>
         </BrowserRouter>
         <Footer></Footer>

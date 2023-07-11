@@ -29,7 +29,6 @@ const getStocks = async (req, res) => {
             }
         );
         result.data.splice(0, 1);
-        console.log(result.data);
         res.send(result.data);
     } catch (error) {
         console.log(error);

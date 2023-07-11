@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const {
     insertPortfolio,
-    addStockToPortfolio,
+    updateStocksInPortfolio,
 } = require("../controller/portfolio.controller");
 
 router.post("/", insertPortfolio);
-router.put("/addStock/:id", addStockToPortfolio);
+router.put("/updateStock/:id", updateStocksInPortfolio);
 
 module.exports = router;
