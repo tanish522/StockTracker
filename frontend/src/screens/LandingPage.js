@@ -19,6 +19,8 @@ const LandingPage = () => {
                 <Row>
                     <div className="intro-text">
                         <div>
+                            <div className="spacer"></div>
+
                             <h1 className="title">Welcome to Stock Tracker</h1>
                             <p className="subtitle">
                                 Track your personal stock portfolio

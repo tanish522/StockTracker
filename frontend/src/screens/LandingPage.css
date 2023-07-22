@@ -1,42 +1,54 @@
 .main {
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    background-image: url(../../images/background3.jpg);
+    min-height: 92vh;
+    background-image: url(../../images/background7.png);
     background-position: center;
     background-size: cover;
+    display: flex;
+    align-items: center;
 }
 
 .intro-text {
-    text-align: center;
-    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .title {
-    font-size: 90px;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .subtitle {
-    font-size: 25px;
-    padding-top: 10px;
+    text-align: right;
+    font-size: 23px;
+    margin-bottom: 40px;
+    font-style: oblique;
 }
 
 .buttonContainer {
-    margin-top: 50px;
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .landingButton {
-    width: 150px;
-    height: 50px;
-    margin: 0 50px;
+    background-color: #000000;
+    color: white;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.landingButton:hover {
+    background-color: #005754;
 }
 
 @media only screen and (max-width: 768px) {
     .title {
         font-size: 60px;
     }
+
     .subtitle {
         font-size: 20px;
         padding-top: 10px;
@@ -47,13 +59,16 @@
     .main {
         width: 100%;
     }
+
     .title {
         font-size: 28px;
     }
+
     .subtitle {
         font-size: 20px;
         padding-top: 5px;
     }
+
     .landingButton {
         margin: 0px 20px;
     }
