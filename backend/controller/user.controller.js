@@ -24,7 +24,6 @@ const getUser = async (req, res) => {
 const getPortfolioByUserId = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id);
         const result = await User.find({ _id: id })
             .populate("portfolioId")
             .select("portfolioId");

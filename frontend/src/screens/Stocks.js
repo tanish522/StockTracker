@@ -16,6 +16,13 @@ const AddStocks = () => {
     });
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
+    const [validated, setValidated] = useState(false);
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    today = yyyy + "-" + mm + "-" + dd;
 
     // Modal functions
     const handleClose = () => {
@@ -33,49 +40,53 @@ const AddStocks = () => {
         let value = event.target.value;
         setData({ ...data, [name]: value, stockName: selectedStock });
     };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const portfolioData = await fetchPortfolio();
-        console.log("portfolioData ", portfolioData);
-        let isStockExists = false;
-        for (var i = 0; i < portfolioData.stocks.length; i++) {
-            // when stock already exists in portfolio
-            if (portfolioData.stocks[i].stockName === selectedStock) {
-                const existingStock = portfolioData.stocks[i];
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        } else {
+            const portfolioData = await fetchPortfolio();
+            let isStockExists = false;
+            for (var i = 0; i < portfolioData.stocks.length; i++) {
+                // when stock already exists in portfolio
+                if (portfolioData.stocks[i].stockName === selectedStock) {
+                    const existingStock = portfolioData.stocks[i];
 
-                let avgQty =
-                    Number(data.buyQuantity) +
-                    Number(existingStock.buyQuantity);
-                console.log("avg quantity ", avgQty);
-                let avgPrice =
-                    (Number(existingStock.buyPrice) * Number(data.buyQuantity) +
-                        Number(data.buyPrice) *
-                            Number(existingStock.buyQuantity)) /
-                    avgQty;
-                console.log("avg price ", avgPrice);
-                setData({
-                    ...data,
-                    buyPrice: avgPrice,
-                    buyQuantity: avgQty,
-                });
-                portfolioData.stocks[i] = {
-                    ...data,
-                    buyPrice: avgPrice,
-                    buyQuantity: avgQty,
-                };
-                isStockExists = true;
-                break;
+                    let avgQty =
+                        Number(data.buyQuantity) +
+                        Number(existingStock.buyQuantity);
+                    let avgPrice =
+                        (Number(existingStock.buyPrice) *
+                            Number(data.buyQuantity) +
+                            Number(data.buyPrice) *
+                                Number(existingStock.buyQuantity)) /
+                        avgQty;
+                    setData({
+                        ...data,
+                        buyPrice: avgPrice,
+                        buyQuantity: avgQty,
+                    });
+                    portfolioData.stocks[i] = {
+                        ...data,
+                        buyPrice: avgPrice,
+                        buyQuantity: avgQty,
+                    };
+                    isStockExists = true;
+                    break;
+                }
             }
+            if (isStockExists === false) {
+                portfolioData.stocks.push(data);
+            }
+            await axios.put(
+                `http://localhost:5000/portfolio/updateStock/${portfolioData._id}`,
+                portfolioData
+            );
+            handleClose();
+            navigateToPortfolio();
         }
-        if (isStockExists === false) {
-            portfolioData.stocks.push(data);
-        }
-        await axios.put(
-            `http://localhost:5000/portfolio/addStock/${portfolioData._id}`,
-            portfolioData
-        );
-        handleClose();
-        navigateToPortfolio();
+        setValidated(true);
     };
     const navigateToPortfolio = () => {
         // 👇️ navigate to /portfolio
@@ -96,9 +107,30 @@ const AddStocks = () => {
 
     // to fetch stock list from db
     const fetchStock = async () => {
-        const data = await axios.get("http://localhost:5000/stock");
-        setStock(data.data);
+        try {
+            const data = await axios.get("http://localhost:5000/stock");
+            data.data.sort(dynamicSort("symbol"));
+            setStock(data.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
+    function dynamicSort(property) {
+        var sortOrder = 1;
+        if (property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a, b) {
+            var result =
+                a[property] < b[property]
+                    ? -1
+                    : a[property] > b[property]
+                    ? 1
+                    : 0;
+            return result * sortOrder;
+        };
+    }
 
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
@@ -110,7 +142,6 @@ const AddStocks = () => {
             );
             if (data && data.data.length) {
                 const portfolioData = data.data[0].portfolioId;
-                console.log(portfolioData);
                 return portfolioData;
             }
         } catch (error) {
@@ -118,26 +149,36 @@ const AddStocks = () => {
         }
     };
 
-    // useEffect will call everytime our page is loaded
     useEffect(() => {
         fetchStock();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="stock">
             <MainScreen title="Stocks">
                 <div>
                     {stocks.map((stock) => (
-                        <ListGroup key={stock._id}>
-                            <ListGroup.Item className="d-flex justify-content-between align-items-start mt-3">
-                                <h4>{stock.stockName}</h4>
-
-                                <Button
-                                    variant="success"
-                                    onClick={openForm(stock.stockName)}
-                                >
-                                    Add Stock
-                                </Button>
+                        <ListGroup key={stock.symbol}>
+                            <ListGroup.Item className="d-flex justify-content-between align-items-start-baseline mt-1">
+                                <div>
+                                    <p style={{ margin: 0 }}>
+                                        {" "}
+                                        <b>Stock: </b> {stock.symbol}
+                                    </p>
+                                    <p style={{ margin: 0 }}>
+                                        {" "}
+                                        <b>Price: </b> {stock.previousClose}
+                                    </p>
+                                </div>
+                                <span style={{ display: "flex" }}>
+                                    <Button
+                                        variant="success"
+                                        onClick={openForm(stock.symbol)}
+                                        size="md"
+                                    >
+                                        Add Stock
+                                    </Button>
+                                </span>
                             </ListGroup.Item>
                         </ListGroup>
                     ))}
@@ -152,10 +193,14 @@ const AddStocks = () => {
                             <Modal.Title>Enter Stock Details</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
+                            <Form
+                                noValidate
+                                validated={validated}
+                                onSubmit={handleSubmit}
+                            >
                                 <Form.Group
                                     className="mb-2"
-                                    controlId="formBuyPrice"
+                                    controlId="formStockName"
                                 >
                                     <Form.Label>Stock Name</Form.Label>
                                     <Form.Control
@@ -165,13 +210,16 @@ const AddStocks = () => {
                                         value={selectedStock}
                                         disabled
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
                                 </Form.Group>
 
                                 <Form.Group
                                     className="mb-2"
                                     controlId="formBuyPrice"
                                 >
-                                    <Form.Label>Buy Price</Form.Label>
+                                    <Form.Label>Buy Price </Form.Label>
                                     <Form.Control
                                         required
                                         autoFocus
@@ -180,7 +228,11 @@ const AddStocks = () => {
                                         name="buyPrice"
                                         onChange={handleChange}
                                         value={data.buyPrice}
+                                        min="1"
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
                                 </Form.Group>
 
                                 <Form.Group
@@ -195,7 +247,11 @@ const AddStocks = () => {
                                         name="buyQuantity"
                                         onChange={handleChange}
                                         value={data.buyQuantity}
+                                        min="1"
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
                                 </Form.Group>
 
                                 <Form.Group
@@ -210,23 +266,27 @@ const AddStocks = () => {
                                         name="buyDate"
                                         onChange={handleChange}
                                         value={data.buyDate}
+                                        max={today}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
                                 </Form.Group>
+
+                                <Modal.Footer>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleClose}
+                                    >
+                                        Close
+                                    </Button>
+
+                                    <Button variant="dark" type="submit">
+                                        Submit
+                                    </Button>
+                                </Modal.Footer>
                             </Form>
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                                Close
-                            </Button>
-
-                            <Button
-                                variant="dark"
-                                type="submit"
-                                onClick={handleSubmit}
-                            >
-                                Submit
-                            </Button>
-                        </Modal.Footer>
                     </Modal>
                     <Routes>
                         <Route path="/portfolio" element={<Portfolio />} />

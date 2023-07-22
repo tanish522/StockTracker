@@ -18,7 +18,7 @@ const portfolioSchema = mongoose.Schema({
             },
             buyDate: {
                 type: Date,
-                default: Date.now,
+                default: Date.now(),
             },
             profitLoss: {
                 type: Number,

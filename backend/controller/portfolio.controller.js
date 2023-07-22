@@ -15,9 +15,8 @@ const insertPortfolio = async (req, res) => {
     }
 };
 
-const addStockToPortfolio = async (req, res) => {
+const updateStocksInPortfolio = async (req, res) => {
     try {
-        console.log("body => ", req.body);
         const body = new Portfolio(req.body);
         const id = req.params.id;
         const filter = { _id: id };
@@ -35,5 +34,5 @@ const addStockToPortfolio = async (req, res) => {
 
 module.exports = {
     insertPortfolio,
-    addStockToPortfolio,
+    updateStocksInPortfolio,
 };
