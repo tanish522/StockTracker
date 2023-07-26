@@ -5,6 +5,10 @@ import { Button, Modal, Form, Card } from "react-bootstrap";
 import axios from "axios";
 import moment from "moment";
 import DataTable from "react-data-table-component";
+import MoonLoader from "react-spinners/MoonLoader";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+Chart.register(ArcElement, Tooltip, Legend);
 
 const Portfolio = () => {
     const [portfolio, setPortfolio] = useState([]); // stocks inside portfolio
@@ -22,6 +26,10 @@ const Portfolio = () => {
     const [pnLPercentage, setPnLPercentage] = useState(0);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [currentValueDataset, setCurrentValueDataset] = useState([]);
+    const [investedValueDataset, setInvestedValueDataset] = useState([]);
+    const [stockNameDataset, setStockNameDataset] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -31,6 +39,7 @@ const Portfolio = () => {
 
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
+        setLoading(true);
         const userId = "647f3e52b0e7bb876995c354";
         try {
             const data = await axios.get(
@@ -44,6 +53,7 @@ const Portfolio = () => {
         } catch (error) {
             console.log("===> ", error);
         }
+        setLoading(false);
     };
     const addCurrStockPriceAndDate = async (portfolioData) => {
         try {
@@ -58,6 +68,7 @@ const Portfolio = () => {
             });
             setPortfolio(portfolioData);
             getPnL(portfolioData);
+            setChartData(portfolioData);
         } catch (error) {
             console.log(error);
         }
@@ -221,7 +232,6 @@ const Portfolio = () => {
         await fetchPortfolio();
     };
 
-    //baki
     const getPnL = (portfolioData) => {
         let pnl = 0,
             investment = 0;
@@ -261,196 +271,289 @@ const Portfolio = () => {
     };
     const isProfit = true;
 
+    // chart variables and functions
+    const setChartData = (portfolioData) => {
+        const currentDataset = [];
+        const investedDataset = [];
+        const stockNameDataset = [];
+        for (let record of portfolioData) {
+            stockNameDataset.push(record.stockName);
+            currentDataset.push(record.currPrice * record.buyQuantity);
+            investedDataset.push(record.buyPrice * record.buyQuantity);
+        }
+        setStockNameDataset(stockNameDataset);
+        setCurrentValueDataset(currentDataset);
+        setInvestedValueDataset(investedDataset);
+    };
+
+    const randomNum = () => Math.floor(Math.random() * (235 - 52 + 1) + 52);
+    var coloR = [];
+    const randomRGB = () =>
+        `rgb(${randomNum()}, ${randomNum()}, ${randomNum()})`;
+    for (let index = 0; index < currentValueDataset.length; index++) {
+        coloR[index] = randomRGB();
+    }
+
+    const data1 = {
+        labels: stockNameDataset,
+        datasets: [
+            {
+                label: "Current Value",
+                data: currentValueDataset,
+                backgroundColor: coloR,
+            },
+        ],
+    };
+    const data2 = {
+        labels: stockNameDataset,
+        datasets: [
+            {
+                label: "Invested Value",
+                data: investedValueDataset,
+                backgroundColor: coloR,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "right",
+            },
+            title: {
+                display: true,
+                text: "Test title",
+            },
+        },
+    };
+
     useEffect(() => {
         fetchPortfolio();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="portfolio">
-            <MainScreen title="Portfolio">
-                <Card>
-                    <Card.Body className="d-flex justify-content-between">
-                        <div>
-                            <p style={defaulttextStyle}>Investment:</p>
-                            <p style={defaultNumberStyle}>{totalInvestment}</p>
-                        </div>
-                        <div>
-                            <p style={defaulttextStyle}>Current Value: </p>
-                            <p style={defaultNumberStyle}>
-                                {currentValue.toFixed(2)}
-                            </p>
-                        </div>
-                        <div>
-                            <p style={defaulttextStyle}>Unrealised P&L: </p>
-                            <p
-                                style={
-                                    isProfit
-                                        ? objectStyleProfit
-                                        : objectStyleLoss
-                                }
-                                className="d-flex"
-                            >
-                                {totalPnL.toFixed(2)}{" "}
-                                <p
-                                    style={{
-                                        fontSize: "15px",
-                                        margin: "15px 0px 0px 5px",
-                                    }}
-                                >
-                                    ({pnLPercentage.toFixed(2)}%)
-                                </p>
-                            </p>
-                        </div>
-                    </Card.Body>
-                </Card>
-                <DataTable
-                    columns={columns}
-                    data={portfolio}
-                    pagination
-                    fixedheader
-                    customStyles={customStyle}
-                    responsive="true"
-                    highlightOnHover
-                ></DataTable>
-
-                <Link to="/stock">
-                    <Button
-                        size="lg"
-                        variant="outline-dark"
-                        className="align-items-start mt-1"
-                    >
-                        Add Stock
-                    </Button>
-                </Link>
-
-                <Modal
-                    show={show}
-                    onHide={handleClose}
-                    size="lg"
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
+            {loading && (
+                <div
+                    style={{
+                        height: "100vh",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
                 >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form
-                            noValidate
-                            validated={validated}
-                            onSubmit={handleSubmit}
-                        >
-                            <Form.Group
-                                className="mb-2"
-                                controlId="formStockName"
-                            >
-                                <Form.Label>Stock Name</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="stockName"
-                                    onChange={handleChange}
-                                    value={data.stockName}
-                                    disabled
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Required Field*
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group
-                                className="mb-2"
-                                controlId="formBuyPrice"
-                            >
-                                <Form.Label>Buy Price</Form.Label>
-                                <Form.Control
-                                    required
-                                    autoFocus
-                                    type="number"
-                                    placeholder="Enter price"
-                                    name="buyPrice"
-                                    onChange={handleChange}
-                                    value={data.buyPrice}
-                                    min="1"
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Required Field*
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group
-                                className="mb-2"
-                                controlId="formBuyQuantity"
-                            >
-                                <Form.Label>Quantity</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="number"
-                                    placeholder="Enter quantity"
-                                    name="buyQuantity"
-                                    onChange={handleChange}
-                                    value={data.buyQuantity}
-                                    min="1"
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Required Field*
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group
-                                className="mb-2"
-                                controlId="formBuyDate"
-                            >
-                                <Form.Label>Investment Date</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="date"
-                                    placeholder="Enter date"
-                                    name="buyDate"
-                                    onChange={handleChange}
-                                    value={data.buyDate}
-                                    max={today}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Required Field*
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Modal.Footer>
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleClose}
+                    <MoonLoader color="#36d7b7" />
+                </div>
+            )}
+            {!loading && (
+                <MainScreen title="Portfolio">
+                    <Card>
+                        <Card.Body className="d-flex justify-content-between">
+                            <div>
+                                <p style={defaulttextStyle}>Investment:</p>
+                                <p style={defaultNumberStyle}>
+                                    {totalInvestment}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={defaulttextStyle}>Current Value: </p>
+                                <p style={defaultNumberStyle}>
+                                    {currentValue.toFixed(2)}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={defaulttextStyle}>Unrealised P&L: </p>
+                                <p
+                                    style={
+                                        isProfit
+                                            ? objectStyleProfit
+                                            : objectStyleLoss
+                                    }
+                                    className="d-flex"
                                 >
-                                    Close
-                                </Button>
-
-                                <Button variant="dark" type="submit">
-                                    Submit
-                                </Button>
-                            </Modal.Footer>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-
-                <Modal show={confirmDelete} onHide={deleteClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm Delete</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Are you sure, do you want to delete {data.stockName}{" "}
-                        from portfolio ?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            variant="danger"
-                            onClick={() => deleteStock(data.stockName)}
+                                    {totalPnL.toFixed(2)}{" "}
+                                    <p
+                                        style={{
+                                            fontSize: "15px",
+                                            margin: "15px 0px 0px 5px",
+                                        }}
+                                    >
+                                        ({pnLPercentage.toFixed(2)}%)
+                                    </p>
+                                </p>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                    <div className="d-flex justify-content-between">
+                        <div
+                            style={{
+                                position: "relative",
+                                width: "60vw",
+                                height: "60vh",
+                            }}
                         >
-                            Yes
+                            <Doughnut data={data1} options={options}></Doughnut>
+                        </div>
+                        <div
+                            style={{
+                                position: "relative",
+                                width: "60vw",
+                                height: "60vh",
+                            }}
+                        >
+                            <Doughnut data={data2} options={options}></Doughnut>
+                        </div>
+                    </div>
+                    <DataTable
+                        columns={columns}
+                        data={portfolio}
+                        pagination
+                        fixedheader
+                        customStyles={customStyle}
+                        responsive="true"
+                        highlightOnHover
+                    ></DataTable>
+
+                    <Link to="/stock">
+                        <Button
+                            size="lg"
+                            variant="outline-dark"
+                            className="align-items-start mt-1"
+                        >
+                            Add Stock
                         </Button>
-                        <Button variant="primary" onClick={deleteClose}>
-                            No
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </MainScreen>
+                    </Link>
+
+                    <Modal
+                        show={show}
+                        onHide={handleClose}
+                        size="lg"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Modal heading</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form
+                                noValidate
+                                validated={validated}
+                                onSubmit={handleSubmit}
+                            >
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="formStockName"
+                                >
+                                    <Form.Label>Stock Name</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="stockName"
+                                        onChange={handleChange}
+                                        value={data.stockName}
+                                        disabled
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="formBuyPrice"
+                                >
+                                    <Form.Label>Buy Price</Form.Label>
+                                    <Form.Control
+                                        required
+                                        autoFocus
+                                        type="number"
+                                        placeholder="Enter price"
+                                        name="buyPrice"
+                                        onChange={handleChange}
+                                        value={data.buyPrice}
+                                        min="1"
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="formBuyQuantity"
+                                >
+                                    <Form.Label>Quantity</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="number"
+                                        placeholder="Enter quantity"
+                                        name="buyQuantity"
+                                        onChange={handleChange}
+                                        value={data.buyQuantity}
+                                        min="1"
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="formBuyDate"
+                                >
+                                    <Form.Label>Investment Date</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="date"
+                                        placeholder="Enter date"
+                                        name="buyDate"
+                                        onChange={handleChange}
+                                        value={data.buyDate}
+                                        max={today}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Required Field*
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Modal.Footer>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleClose}
+                                    >
+                                        Close
+                                    </Button>
+
+                                    <Button variant="dark" type="submit">
+                                        Submit
+                                    </Button>
+                                </Modal.Footer>
+                            </Form>
+                        </Modal.Body>
+                    </Modal>
+
+                    <Modal show={confirmDelete} onHide={deleteClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirm Delete</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            Are you sure, do you want to delete {data.stockName}{" "}
+                            from portfolio ?
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="danger"
+                                onClick={() => deleteStock(data.stockName)}
+                            >
+                                Yes
+                            </Button>
+                            <Button variant="primary" onClick={deleteClose}>
+                                No
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </MainScreen>
+            )}
         </div>
     );
 };

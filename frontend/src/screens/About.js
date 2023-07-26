@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import MainScreen from "../components/MainScreen";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+Chart.register(ArcElement, Tooltip, Legend);
 
 const About = () => {
     const [sectors, setSector] = useState([]);
@@ -23,6 +27,33 @@ const About = () => {
     useEffect(() => {
         fetchSector();
     }, []);
+
+    const randomNum = () => Math.floor(Math.random() * (235 - 52 + 1) + 52);
+    let dataSet = [5, 7, 45, 3, 4, 67, 8, 99, 32, 33, 44, 1];
+    var coloR = [];
+    const randomRGB = () =>
+        `rgb(${randomNum()}, ${randomNum()}, ${randomNum()})`;
+    for (let index = 0; index < dataSet.length; index++) {
+        coloR[index] = randomRGB();
+    }
+    const data = {
+        labels: dataSet,
+        datasets: [
+            {
+                label: "poll",
+                data: dataSet,
+                backgroundColor: coloR,
+            },
+        ],
+    };
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+                text: "Test title",
+            },
+        },
+    };
 
     return (
         <div className="about">
@@ -56,6 +87,9 @@ const About = () => {
                     {sectors.map((sector) => (
                         <li key={sector._id}>{sector.sectorName}</li>
                     ))}
+                </div>
+                <div style={{ width: "50%", height: "50%" }}>
+                    <Doughnut data={data} options={options}></Doughnut>
                 </div>
             </MainScreen>
         </div>

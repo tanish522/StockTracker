@@ -4,6 +4,8 @@ import { Button, Form, ListGroup, Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, Route, Routes } from "react-router-dom";
 import Portfolio from "./Portfolio";
+import Loading from "../components/Loading";
+import MoonLoader from "react-spinners/MoonLoader";
 
 const AddStocks = () => {
     const [stocks, setStock] = useState([]);
@@ -17,6 +19,7 @@ const AddStocks = () => {
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -41,6 +44,7 @@ const AddStocks = () => {
         setData({ ...data, [name]: value, stockName: selectedStock });
     };
     const handleSubmit = async (event) => {
+        setLoading(true);
         event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -87,6 +91,7 @@ const AddStocks = () => {
             navigateToPortfolio();
         }
         setValidated(true);
+        setLoading(false);
     };
     const navigateToPortfolio = () => {
         // 👇️ navigate to /portfolio
@@ -107,12 +112,15 @@ const AddStocks = () => {
 
     // to fetch stock list from db
     const fetchStock = async () => {
+        setLoading(true);
         try {
             const data = await axios.get("http://localhost:5000/stock");
             data.data.sort(dynamicSort("symbol"));
             setStock(data.data);
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     };
     function dynamicSort(property) {
@@ -157,6 +165,18 @@ const AddStocks = () => {
         <div className="stock">
             <MainScreen title="Stocks">
                 <div>
+                    {loading && (
+                        <div
+                            style={{
+                                height: "100vh",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <MoonLoader color="#36d7b7" />
+                        </div>
+                    )}
                     {stocks.map((stock) => (
                         <ListGroup key={stock.symbol}>
                             <ListGroup.Item className="d-flex justify-content-between align-items-start-baseline mt-1">
