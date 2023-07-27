@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 const Header = () => {
-
     const history = useNavigate();
     return (
         <Navbar bg="dark" expand="md" variant="dark">
@@ -58,10 +57,12 @@ const Header = () => {
                             <NavDropdown.Item href="#action/3.1">
                                 MyProfile
                             </NavDropdown.Item>
-                            <NavDropdown.Item onClick={() => {
-                                localStorage.removeItem("userInfo");
-                                history('/');
-                            }}>
+                            <NavDropdown.Item
+                                onClick={() => {
+                                    localStorage.removeItem("userInfo");
+                                    history("/");
+                                }}
+                            >
                                 Logout
                             </NavDropdown.Item>
                         </NavDropdown>

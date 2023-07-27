@@ -4,7 +4,6 @@ import { Button, Form, ListGroup, Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, Route, Routes } from "react-router-dom";
 import Portfolio from "./Portfolio";
-import Loading from "../components/Loading";
 import MoonLoader from "react-spinners/MoonLoader";
 
 const AddStocks = () => {

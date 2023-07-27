@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import MainScreen from "../components/MainScreen";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
-import './LoginScreen.css';
+import "./LoginScreen.css";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
+import MoonLoader from "react-spinners/MoonLoader";
 import ErrorMessage from "../components/ErrorMessage";
 var Link = require("react-router-dom").Link;
-
-
 
 const LoginScreen = () => {
     const history = useNavigate();
@@ -17,8 +15,6 @@ const LoginScreen = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-
-
     const submitHandler = async (e) => {
         e.preventDefault();
         console.log(email, password);
@@ -26,13 +22,13 @@ const LoginScreen = () => {
         try {
             const config = {
                 headers: {
-                    "Content-type": "application/json"
-                }
-            }
-            setLoading(true)
+                    "Content-type": "application/json",
+                },
+            };
+            setLoading(true);
 
             const { data } = await axios.post(
-                'http://localhost:5000/auth/login',
+                "http://localhost:5000/auth/login",
                 {
                     email,
                     password,
@@ -40,7 +36,7 @@ const LoginScreen = () => {
                 config
             );
             console.log(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem("userInfo", JSON.stringify(data));
             setLoading(false);
         } catch (error) {
             setError(error.response.data.message);
@@ -51,7 +47,18 @@ const LoginScreen = () => {
         <MainScreen title="LOGIN">
             <div className="loginContainer">
                 {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-                {loading && <Loading />}
+                {loading && (
+                    <div
+                        style={{
+                            height: "100vh",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <MoonLoader color="#36d7b7" />
+                    </div>
+                )}
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email Address</Form.Label>

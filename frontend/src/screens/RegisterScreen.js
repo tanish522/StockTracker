@@ -1,21 +1,20 @@
 import MainScreen from "../components/MainScreen";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     MDBBtn,
     MDBContainer,
     MDBCard,
     MDBCardBody,
     MDBInput,
-    MDBCheckbox
-} from 'mdb-react-ui-kit';
-import './RegisterScreen.css';
+    MDBCheckbox,
+} from "mdb-react-ui-kit";
+import "./RegisterScreen.css";
 import { Error } from "mongoose";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
-import Loading from "../components/Loading";
+import MoonLoader from "react-spinners/MoonLoader";
 
 const RegisterScreen = () => {
-
     const [email, setEmail] = useState("");
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -28,9 +27,8 @@ const RegisterScreen = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            setMessage('Passwords Do not Match');
-        }
-        else {
+            setMessage("Passwords Do not Match");
+        } else {
             setMessage(null);
             try {
                 const config = {
@@ -48,50 +46,107 @@ const RegisterScreen = () => {
                 );
                 setLoading(false);
                 localStorage.setItem("userInfo", JSON.stringify(data));
-
             } catch (error) {
                 setError(error.response.data.message);
                 setLoading(false);
             }
         }
-    }
+    };
 
     return (
         <div>
-            <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' style={{ backgroundImage: 'url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)' }}>
-                <div className='mask gradient-custom-3'></div>
+            <MDBContainer
+                fluid
+                className="d-flex align-items-center justify-content-center bg-image"
+                style={{
+                    backgroundImage:
+                        "url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)",
+                }}
+            >
+                <div className="mask gradient-custom-3"></div>
 
-                <MDBCard className='m-5' style={{ maxWidth: '600px' }}>
-                    <MDBCardBody className='px-5'>
-                        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-                        {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
-                        {loading && <Loading />}
-                        <h2 className="text-uppercase text-center mb-5">Create an account</h2>
-                        <MDBInput wrapperClass='mb-4' label='Your Name' size='lg' id='form1' type='username'
+                <MDBCard className="m-5" style={{ maxWidth: "600px" }}>
+                    <MDBCardBody className="px-5">
+                        {error && (
+                            <ErrorMessage variant="danger">
+                                {error}
+                            </ErrorMessage>
+                        )}
+                        {message && (
+                            <ErrorMessage variant="danger">
+                                {message}
+                            </ErrorMessage>
+                        )}
+                        {loading && (
+                            <div
+                                style={{
+                                    height: "100vh",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <MoonLoader color="#36d7b7" />
+                            </div>
+                        )}
+                        <h2 className="text-uppercase text-center mb-5">
+                            Create an account
+                        </h2>
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Your Name"
+                            size="lg"
+                            id="form1"
+                            type="username"
                             value={username}
                             onChange={(e) => setUserName(e.target.value)}
                         />
-                        <MDBInput wrapperClass='mb-4' label='Your Email' size='lg' id='form2' type='email'
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Your Email"
+                            size="lg"
+                            id="form2"
+                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <MDBInput wrapperClass='mb-4' label='Password' size='lg' id='form3' type='password'
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Password"
+                            size="lg"
+                            id="form3"
+                            type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <MDBInput wrapperClass='mb-4' label='Repeat your password' size='lg' id='form4' type='password'
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Repeat your password"
+                            size="lg"
+                            id="form4"
+                            type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
-                        <div className='d-flex flex-row justify-content-center mb-4'>
-                            <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' />
+                        <div className="d-flex flex-row justify-content-center mb-4">
+                            <MDBCheckbox
+                                name="flexCheck"
+                                id="flexCheckDefault"
+                                label="I agree all statements in Terms of service"
+                            />
                         </div>
-                        <MDBBtn onClick={submitHandler} className='mb-4 w-100 gradient-custom-4' size='lg'>Register</MDBBtn>
+                        <MDBBtn
+                            onClick={submitHandler}
+                            className="mb-4 w-100 gradient-custom-4"
+                            size="lg"
+                        >
+                            Register
+                        </MDBBtn>
                     </MDBCardBody>
                 </MDBCard>
             </MDBContainer>
         </div>
-    )
+    );
 };
 
 export default RegisterScreen;
