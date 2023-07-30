@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { Button, Modal, Form, Card } from "react-bootstrap";
 import axios from "axios";
 import moment from "moment";
+import Header from "../components/Header";
 import DataTable from "react-data-table-component";
-import MoonLoader from "react-spinners/MoonLoader";
+import Loading from "../components/Loading";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 Chart.register(ArcElement, Tooltip, Legend);
@@ -334,18 +335,8 @@ const Portfolio = () => {
 
     return (
         <div className="portfolio">
-            {loading && (
-                <div
-                    style={{
-                        height: "100vh",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <MoonLoader color="#36d7b7" />
-                </div>
-            )}
+            <Header></Header>
+            {loading && <Loading />}
             {!loading && (
                 <MainScreen title="Portfolio">
                     <Card>

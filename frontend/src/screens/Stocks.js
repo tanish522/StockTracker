@@ -4,7 +4,8 @@ import { Button, Form, ListGroup, Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, Route, Routes } from "react-router-dom";
 import Portfolio from "./Portfolio";
-import MoonLoader from "react-spinners/MoonLoader";
+import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 const AddStocks = () => {
     const [stocks, setStock] = useState([]);
@@ -162,20 +163,10 @@ const AddStocks = () => {
 
     return (
         <div className="stock">
+            <Header></Header>
+            {loading && <Loading />}
             <MainScreen title="Stocks">
                 <div>
-                    {loading && (
-                        <div
-                            style={{
-                                height: "100vh",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <MoonLoader color="#36d7b7" />
-                        </div>
-                    )}
                     {stocks.map((stock) => (
                         <ListGroup key={stock.symbol}>
                             <ListGroup.Item className="d-flex justify-content-between align-items-start-baseline mt-1">

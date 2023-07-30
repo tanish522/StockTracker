@@ -1,22 +1,18 @@
-import Spinner from 'react-bootstrap/Spinner';
+import MoonLoader from "react-spinners/MoonLoader";
 
 const Loading = () => {
     return (
         <div
             style={{
+                height: "100vh",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                width: "100%",
-                height: "100%",
             }}
         >
-            <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-
+            <MoonLoader color="#36d7b7" />
         </div>
-    )
-}
+    );
+};
 
-export default Loading
+export default Loading;

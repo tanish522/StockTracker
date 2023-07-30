@@ -8,7 +8,6 @@ const Header = () => {
         <Navbar bg="dark" expand="md" variant="dark">
             <Container>
                 <Navbar.Brand>
-                    {/* This / is a route which will navigate page to specified element in index.js */}
                     <Link
                         to="/"
                         style={{ color: "inherit", textDecoration: "inherit" }}
@@ -21,6 +20,7 @@ const Header = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link>
+                            {/* This / is a route which will navigate page to specified element in index.js */}
                             <Link
                                 to="/portfolio"
                                 style={{

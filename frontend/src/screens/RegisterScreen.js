@@ -12,7 +12,7 @@ import "./RegisterScreen.css";
 import { Error } from "mongoose";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
-import MoonLoader from "react-spinners/MoonLoader";
+import Loading from "../components/Loading";
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState("");
@@ -77,18 +77,7 @@ const RegisterScreen = () => {
                                 {message}
                             </ErrorMessage>
                         )}
-                        {loading && (
-                            <div
-                                style={{
-                                    height: "100vh",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <MoonLoader color="#36d7b7" />
-                            </div>
-                        )}
+                        {loading && <Loading />}
                         <h2 className="text-uppercase text-center mb-5">
                             Create an account
                         </h2>
