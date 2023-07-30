@@ -53,7 +53,7 @@ const Header = () => {
                                 About
                             </Link>
                         </Nav.Link>
-                        <NavDropdown title="Tanish" id="basic-nav-dropdown">
+                        <NavDropdown id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">
                                 MyProfile
                             </NavDropdown.Item>

@@ -5,6 +5,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { Provider } from "react-redux";
 
 // for react bootstrap
 // import "../node_modules/react-bootstrap/dist/react-bootstrap";
@@ -16,10 +17,11 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 
 import Stocks from "./screens/Stocks";
+import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
+    <Provider store={store}>
         <BrowserRouter>
 
             <Header></Header>
@@ -34,7 +36,7 @@ root.render(
             </Routes>
         </BrowserRouter>
         <Footer></Footer>
-    </React.StrictMode>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

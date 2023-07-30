@@ -1,47 +1,33 @@
 import { useEffect, useState } from "react";
 import MainScreen from "../components/MainScreen";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import axios from "axios";
 import "./LoginScreen.css";
-import { useNavigate } from "react-router-dom";
 import MoonLoader from "react-spinners/MoonLoader";
 import ErrorMessage from "../components/ErrorMessage";
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from "../actions/userActions";
+import { useNavigate } from "react-router";
+
 var Link = require("react-router-dom").Link;
 
+
 const LoginScreen = () => {
-    const history = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.state)
+    const { loading, error, userInfo } = userLogin;
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate("/portfolio");
+        }
+    }, [navigate, userInfo])
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        console.log(email, password);
-
-        try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                },
-            };
-            setLoading(true);
-
-            const { data } = await axios.post(
-                "http://localhost:5000/auth/login",
-                {
-                    email,
-                    password,
-                },
-                config
-            );
-            console.log(data);
-            localStorage.setItem("userInfo", JSON.stringify(data));
-            setLoading(false);
-        } catch (error) {
-            setError(error.response.data.message);
-            setLoading(false);
-        }
+        dispatch(login(email, password));
     };
     return (
         <MainScreen title="LOGIN">
