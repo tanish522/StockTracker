@@ -7,7 +7,6 @@ require("./connection.js"); // this import statement will connect our server to 
 app.use(express.json()); // this allows our application to use json data
 app.use(cors()); // it enables CORS (cross-origin resource sharing). In order for your server to be accessible by other origins (domains).
 
-const sectorRoutes = require("./routes/sector.routes");
 const userRoutes = require("./routes/user.routes.js");
 const stockRoutes = require("./routes/stock.routes.js");
 const authRoutes = require("./routes/auth.routes.js");
@@ -16,7 +15,6 @@ const { notFound, errorHandler } = require("./middlewares/errorMiddleware.js");
 
 const portfolioRoutes = require("./routes/portfolio.routes.js");
 
-app.use("/sector", sectorRoutes);
 app.use("/user", userRoutes);
 app.use("/stock", stockRoutes);
 app.use("/auth", authRoutes);

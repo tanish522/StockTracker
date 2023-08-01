@@ -11,10 +11,12 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("User Already Exists");
     }
 
+    const portfolioId = await insertPortfolio();
     const user = await User.create({
         username,
         email,
         password,
+        portfolioId,
     });
 
     if (user) {
@@ -22,6 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
+            portfolioId: portfolioId,
             token: generateToken(user._id),
         });
     } else {

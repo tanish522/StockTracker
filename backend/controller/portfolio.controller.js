@@ -7,9 +7,9 @@ const Portfolio = require("../models/portfolio");
 const insertPortfolio = async (req, res) => {
     try {
         // creating Portfolio object for storing document/data
-        const body = new Portfolio(req.body);
+        const body = new Portfolio({});
         const result = await body.save();
-        res.send(result);
+        return result._id;
     } catch (error) {
         console.log(error);
     }

@@ -25,14 +25,6 @@ const portfolioSchema = mongoose.Schema({
             },
         },
     ],
-
-    totalInvestment: {
-        type: Number,
-    },
-
-    totalPnL: {
-        type: Number,
-    },
 });
 
 const Portfolio = new mongoose.model("Portfolio", portfolioSchema);
