@@ -54,6 +54,7 @@ const Portfolio = () => {
         } catch (error) {
             console.log("===> ", error);
         }
+        console.log("data:", data);
         setLoading(false);
     };
     const addCurrStockPriceAndDate = async (portfolioData) => {

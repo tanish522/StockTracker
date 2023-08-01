@@ -1,9 +1,19 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
 
 const Header = () => {
-    const history = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
+    const logoutHandler = () => {
+        dispatch(logout());
+        navigate("/");
+    }
+
     return (
         <Navbar bg="dark" expand="md" variant="dark">
             <Container>
@@ -53,15 +63,12 @@ const Header = () => {
                                 About
                             </Link>
                         </Nav.Link>
-                        <NavDropdown id="basic-nav-dropdown">
+                        <NavDropdown title={userInfo.username} id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">
                                 MyProfile
                             </NavDropdown.Item>
                             <NavDropdown.Item
-                                onClick={() => {
-                                    localStorage.removeItem("userInfo");
-                                    history("/");
-                                }}
+                                onClick={logoutHandler}
                             >
                                 Logout
                             </NavDropdown.Item>
@@ -69,7 +76,7 @@ const Header = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
-        </Navbar>
+        </Navbar >
     );
 };
 
