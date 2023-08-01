@@ -1,5 +1,6 @@
 import MainScreen from "../components/MainScreen";
 import React, { useState } from "react";
+import { useNavigate, Route, Routes } from "react-router-dom";
 import {
     MDBBtn,
     MDBContainer,
@@ -13,6 +14,9 @@ import { Error } from "mongoose";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
 import Loading from "../components/Loading";
+import LoginScreen from "./LoginScreen";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState("");
@@ -22,12 +26,36 @@ const RegisterScreen = () => {
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        const uppercaseRegExp = /(?=.*?[A-Z])/;
+        const lowercaseRegExp = /(?=.*?[a-z])/;
+        const digitsRegExp = /(?=.*?[0-9])/;
+        const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+        const minLengthRegExp = /.{8,}/;
+        const passwordLength = password.length;
+        const uppercasePassword = uppercaseRegExp.test(password);
+        const lowercasePassword = lowercaseRegExp.test(password);
+        const digitsPassword = digitsRegExp.test(password);
+        const specialCharPassword = specialCharRegExp.test(password);
+        const minLengthPassword = minLengthRegExp.test(password);
 
         if (password !== confirmPassword) {
             setMessage("Passwords Do not Match");
+        } else if (passwordLength === 0) {
+            setMessage("Password is empty");
+        } else if (!uppercasePassword) {
+            setMessage("At least one Uppercase");
+        } else if (!lowercasePassword) {
+            setMessage("At least one Lowercase");
+        } else if (!digitsPassword) {
+            setMessage("At least one digit");
+        } else if (!specialCharPassword) {
+            setMessage("At least one Special Characters");
+        } else if (!minLengthPassword) {
+            setMessage("At least minumum 8 characters");
         } else {
             setMessage(null);
             try {
@@ -44,13 +72,29 @@ const RegisterScreen = () => {
                     { username, email, password },
                     config
                 );
-                setLoading(false);
                 localStorage.setItem("userInfo", JSON.stringify(data));
+                setLoading(false);
+                navigateToLogin();
             } catch (error) {
                 setError(error.response.data.message);
                 setLoading(false);
             }
         }
+    };
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            <p>minimum 8 characters required</p>
+            <p>1 uppercase character</p>
+            <p>1 lowercase character</p>
+            <p>1 digit/number</p>
+            <p>1 special character</p>
+        </Tooltip>
+    );
+
+    const navigateToLogin = () => {
+        // 👇️ navigate to /portfolio
+        navigate("/login");
     };
 
     return (
@@ -99,15 +143,21 @@ const RegisterScreen = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <MDBInput
-                            wrapperClass="mb-4"
-                            label="Password"
-                            size="lg"
-                            id="form3"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <OverlayTrigger
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                        >
+                            <MDBInput
+                                wrapperClass="mb-4"
+                                label="Password "
+                                size="lg"
+                                id="form3"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </OverlayTrigger>
                         <MDBInput
                             wrapperClass="mb-4"
                             label="Repeat your password"
@@ -134,6 +184,9 @@ const RegisterScreen = () => {
                     </MDBCardBody>
                 </MDBCard>
             </MDBContainer>
+            <Routes>
+                <Route path="/login" element={<LoginScreen />} />
+            </Routes>
         </div>
     );
 };

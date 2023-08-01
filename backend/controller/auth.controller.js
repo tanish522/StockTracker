@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const User = require('../models/user');
+const User = require("../models/user");
 const generateToken = require("../utils/generateToken");
+const { insertPortfolio } = require("../controller/portfolio.controller");
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -13,7 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         username,
         email,
-        password
+        password,
     });
 
     if (user) {
@@ -21,14 +22,12 @@ const registerUser = asyncHandler(async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
-            token: generateToken(user._id)
-        })
+            token: generateToken(user._id),
+        });
     } else {
         res.status(400);
         throw new Error("Error Occured! ");
     }
-
-
 });
 
 const authUser = asyncHandler(async (req, res) => {
@@ -36,7 +35,7 @@ const authUser = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if (user && await user.matchPassword(password)) {
+    if (user && (await user.matchPassword(password))) {
         res.json({
             _id: user._id,
             username: user.username,
@@ -47,9 +46,7 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Invalid Email or Password! ");
     }
-
 });
-
 
 const updateUserProfile = asyncHandler(async (req, res) => {
     //only the logged in user be able to change its details
@@ -80,3 +77,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 module.exports = { registerUser, authUser, updateUserProfile };
+

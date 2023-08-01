@@ -250,6 +250,7 @@ const Portfolio = () => {
         setCurrentValue(pnl + investment);
         setPnLPercentage((pnl * 100) / investment);
     };
+    const isProfit = totalPnL >= 0 ? true : false;
     const objectStyleProfit = {
         color: "green",
         fontSize: "30px",
@@ -271,7 +272,6 @@ const Portfolio = () => {
         margin: "0",
         padding: "0px 20px 0px 20px",
     };
-    const isProfit = true;
 
     // chart variables and functions
     const setChartData = (portfolioData) => {
