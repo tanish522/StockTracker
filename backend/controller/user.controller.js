@@ -47,6 +47,7 @@ const signUp = async (req, res) => {
     }
 };
 
+
 module.exports = {
     insertUser,
     getUser,
