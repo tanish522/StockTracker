@@ -385,6 +385,7 @@ const Portfolio = () => {
                                 height: "60vh",
                             }}
                         >
+                            <h1>Current value</h1>
                             <Doughnut data={data1} options={options}></Doughnut>
                         </div>
                         <div
@@ -394,6 +395,7 @@ const Portfolio = () => {
                                 height: "60vh",
                             }}
                         >
+                            <h1>Invested value</h1>
                             <Doughnut data={data2} options={options}></Doughnut>
                         </div>
                     </div>
