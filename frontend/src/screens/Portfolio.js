@@ -9,6 +9,8 @@ import DataTable from "react-data-table-component";
 import Loading from "../components/Loading";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { useSelector } from "react-redux";
+
 Chart.register(ArcElement, Tooltip, Legend);
 
 const Portfolio = () => {
@@ -31,6 +33,9 @@ const Portfolio = () => {
     const [investedValueDataset, setInvestedValueDataset] = useState([]);
     const [stockNameDataset, setStockNameDataset] = useState([]);
     const [loading, setLoading] = useState(false);
+    //const [portfolioId, setPortfolioId] = useState("");
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -38,10 +43,20 @@ const Portfolio = () => {
     var yyyy = today.getFullYear();
     today = yyyy + "-" + mm + "-" + dd;
 
+
+
+
+
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
+
+
+
         setLoading(true);
-        const userId = "647f3e52b0e7bb876995c354";
+        //const userId = "64cbc058322c83e4367c90d0";
+
+        const userId = userInfo._id;
+        console.log("user id: " + userId);
         try {
             const data = await axios.get(
                 `http://localhost:5000/user/${userId}`

@@ -5,7 +5,6 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Footer from "./components/Footer";
 import { Provider } from "react-redux";
-
 // for react bootstrap
 // import "../node_modules/react-bootstrap/dist/react-bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
@@ -15,8 +14,10 @@ import About from "./screens/About";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 
+
 import Stocks from "./screens/Stocks";
 import store from "./store";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -26,7 +27,7 @@ root.render(
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/register" element={<RegisterScreen />} />
-
+                <Route path="/profile" element={<ProfileScreen />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/stock/*" element={<Stocks />} />
