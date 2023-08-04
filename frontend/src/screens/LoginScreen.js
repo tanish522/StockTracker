@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import { useNavigate } from "react-router";
 
+
 var Link = require("react-router-dom").Link;
 
 const LoginScreen = () => {
@@ -16,7 +17,7 @@ const LoginScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userLogin = useSelector((state) => state.userLogin);
-    const { loading, error, userInfo } = userLogin;
+    const { error, userInfo } = userLogin;
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
