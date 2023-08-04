@@ -1,4 +1,3 @@
-import MainScreen from "../components/MainScreen";
 import React, { useState } from "react";
 import { useNavigate, Route, Routes } from "react-router-dom";
 import {
@@ -10,7 +9,6 @@ import {
     MDBCheckbox,
 } from "mdb-react-ui-kit";
 import "./RegisterScreen.css";
-import { Error } from "mongoose";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -105,6 +103,7 @@ const RegisterScreen = () => {
                 style={{
                     backgroundImage:
                         "url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)",
+                    minHeight: "100vh",
                 }}
             >
                 <div className="mask gradient-custom-3"></div>
@@ -128,7 +127,7 @@ const RegisterScreen = () => {
                         <MDBInput
                             wrapperClass="mb-4"
                             label="Your Name"
-                            size="lg"
+                            size="md"
                             id="form1"
                             type="username"
                             value={username}
@@ -137,7 +136,7 @@ const RegisterScreen = () => {
                         <MDBInput
                             wrapperClass="mb-4"
                             label="Your Email"
-                            size="lg"
+                            size="md"
                             id="form2"
                             type="email"
                             value={email}
@@ -151,7 +150,7 @@ const RegisterScreen = () => {
                             <MDBInput
                                 wrapperClass="mb-4"
                                 label="Password "
-                                size="lg"
+                                size="md"
                                 id="form3"
                                 type="password"
                                 value={password}
@@ -161,7 +160,7 @@ const RegisterScreen = () => {
                         <MDBInput
                             wrapperClass="mb-4"
                             label="Repeat your password"
-                            size="lg"
+                            size="md"
                             id="form4"
                             type="password"
                             value={confirmPassword}

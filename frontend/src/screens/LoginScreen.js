@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
-import MainScreen from "../components/MainScreen";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import {
+    MDBBtn,
+    MDBContainer,
+    MDBCard,
+    MDBCardBody,
+    MDBInput,
+} from "mdb-react-ui-kit";
 import "./LoginScreen.css";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
@@ -32,44 +37,62 @@ const LoginScreen = () => {
         setLoading(false);
     };
     return (
-        <MainScreen title="LOGIN">
-            <div className="loginContainer">
-                {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-                {isLoading && <Loading />}
-                <Form onSubmit={submitHandler}>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control
+        <div>
+            {/* {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+            {isLoading && <Loading />} */}
+            <MDBContainer
+                fluid
+                className="d-flex align-items-center justify-content-center bg-image"
+                style={{
+                    backgroundImage:
+                        "url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)",
+                    minHeight: "100vh",
+                }}
+            >
+                <div className="mask gradient-custom-3"></div>
+
+                <MDBCard className="m-5" style={{ maxWidth: "600px" }}>
+                    <MDBCardBody className="px-5">
+                        {error && (
+                            <ErrorMessage variant="danger">
+                                {error}
+                            </ErrorMessage>
+                        )}
+
+                        {loading && <Loading />}
+                        <h2 className="text-uppercase text-center mb-5">
+                            Enter Login Details
+                        </h2>
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Email Address"
+                            size="md"
+                            id="form1"
                             type="email"
                             value={email}
-                            placeholder="enter email"
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                    </Form.Group>
-
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
+                        <MDBInput
+                            wrapperClass="mb-4"
+                            label="Password"
+                            size="md"
+                            id="form2"
                             type="password"
                             value={password}
-                            placeholder="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </Form.Group>
 
-                    <Button className="mt-3" variant="primary" type="submit">
-                        Submit
-                    </Button>
-
-                    <Row className="py-3">
-                        <Col>
-                            New Customer ?{" "}
-                            <Link to="/register"> Register Here </Link>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        </MainScreen>
+                        <MDBBtn
+                            onClick={submitHandler}
+                            className="mb-4 w-100 gradient-custom-4"
+                            size="lg"
+                        >
+                            Login
+                        </MDBBtn>
+                    </MDBCardBody>
+                </MDBCard>
+            </MDBContainer>
+        </div>
     );
 };
 
