@@ -43,15 +43,8 @@ const Portfolio = () => {
     var yyyy = today.getFullYear();
     today = yyyy + "-" + mm + "-" + dd;
 
-
-
-
-
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
-
-
-
         setLoading(true);
         //const userId = "64cbc058322c83e4367c90d0";
 
@@ -315,8 +308,8 @@ const Portfolio = () => {
         labels: stockNameDataset,
         datasets: [
             {
-                label: "Current Value",
-                data: currentValueDataset,
+                label: "Invested Value",
+                data: investedValueDataset,
                 backgroundColor: coloR,
             },
         ],
@@ -325,8 +318,8 @@ const Portfolio = () => {
         labels: stockNameDataset,
         datasets: [
             {
-                label: "Invested Value",
-                data: investedValueDataset,
+                label: "Current Value",
+                data: currentValueDataset,
                 backgroundColor: coloR,
             },
         ],
@@ -334,6 +327,7 @@ const Portfolio = () => {
 
     const options = {
         responsive: true,
+        aspectRatio: 1.4,
         plugins: {
             legend: {
                 position: "right",
@@ -396,34 +390,39 @@ const Portfolio = () => {
                         <div
                             style={{
                                 position: "relative",
-                                width: "60vw",
-                                height: "60vh",
+                                width: "50vw",
+                                height: "50vh",
                             }}
                         >
-                            <h1>Current value</h1>
+                            <h1 style={{ padding: "20px 150px 0px 0px" }}>
+                                <center>Invested value</center>
+                            </h1>
                             <Doughnut data={data1} options={options}></Doughnut>
                         </div>
                         <div
                             style={{
                                 position: "relative",
-                                width: "60vw",
-                                height: "60vh",
+                                width: "50vw",
+                                height: "50vh",
                             }}
                         >
-                            <h1>Invested value</h1>
+                            <h1 style={{ padding: "20px 150px 0px 0px" }}>
+                                <center>Current value</center>
+                            </h1>
                             <Doughnut data={data2} options={options}></Doughnut>
                         </div>
                     </div>
-                    <DataTable
-                        columns={columns}
-                        data={portfolio}
-                        pagination
-                        fixedheader
-                        customStyles={customStyle}
-                        responsive="true"
-                        highlightOnHover
-                    ></DataTable>
-
+                    <div style={{ padding: "5em 0px 0px 0px" }}>
+                        <DataTable
+                            columns={columns}
+                            data={portfolio}
+                            pagination
+                            fixedheader
+                            customStyles={customStyle}
+                            responsive="true"
+                            highlightOnHover
+                        ></DataTable>
+                    </div>
                     <Link to="/stock">
                         <Button
                             size="lg"

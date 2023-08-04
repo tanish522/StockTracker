@@ -7,22 +7,25 @@ import { logout } from "../actions/userActions";
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userLogin = useSelector(state => state.userLogin);
+    const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    console.log("user")
+    console.log("user");
     console.log(userInfo);
     const logoutHandler = () => {
         dispatch(logout());
         navigate("/");
-    }
+    };
 
     return (
         <Navbar bg="dark" expand="md" variant="dark">
             <Container>
                 <Navbar.Brand>
                     <Link
-                        to="/"
-                        style={{ color: "inherit", textDecoration: "inherit" }}
+                        style={{
+                            color: "inherit",
+                            textDecoration: "inherit",
+                            cursor: "default",
+                        }}
                     >
                         {" "}
                         Stock Tracker
@@ -65,20 +68,21 @@ const Header = () => {
                                 About
                             </Link>
                         </Nav.Link>
-                        <NavDropdown title={userInfo?.username} id="basic-nav-dropdown">
+                        <NavDropdown
+                            title={userInfo?.username}
+                            id="basic-nav-dropdown"
+                        >
                             <NavDropdown.Item href="/profile">
                                 MyProfile
                             </NavDropdown.Item>
-                            <NavDropdown.Item
-                                onClick={logoutHandler}
-                            >
+                            <NavDropdown.Item onClick={logoutHandler}>
                                 Logout
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
-        </Navbar >
+        </Navbar>
     );
 };
 
