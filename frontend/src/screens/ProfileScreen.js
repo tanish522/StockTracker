@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate } from "react-router";
 import { updateProfile } from "../actions/userActions";
+import Loading from "../components/Loading"
+import ErrorMessage from "../components/ErrorMessage";
+import "./ProfileScreen.css";
 
 
 const ProfileScreen = () => {
 
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,8 +25,8 @@ const ProfileScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(userInfo);
         if (userInfo) {
+            setUsername(userInfo.username);
             setEmail(userInfo.email);
         }
     }, [navigate, userInfo]);
@@ -32,8 +35,10 @@ const ProfileScreen = () => {
         e.preventDefault();
 
         if (password === confirmPassword)
-            dispatch(updateProfile({ name, email, password }));
+            dispatch(updateProfile({ username, email, password }));
     }
+
+
 
     return <div>
         <Header></Header>
@@ -43,17 +48,26 @@ const ProfileScreen = () => {
                 <Row className="profileContainer">
                     <Col md={6}>
                         <Form onSubmit={submitHandler}>
-                            <Form.Group controlId="name">
-                                <Form.Label>Name</Form.Label>
+                            {loading && <Loading />}
+                            {success && (
+                                <ErrorMessage variant="success">
+                                    Updated Successfully
+                                </ErrorMessage>
+                            )}
+                            {
+                                error && <ErrorMessage variant="danger">{error}</ErrorMessage>
+                            }
+                            <Form.Group controlId="username" className="formContainer">
+                                <Form.Label>username</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter username"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                 >
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId="email">
+                            <Form.Group controlId="email" className="formContainer">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -63,7 +77,7 @@ const ProfileScreen = () => {
                                 >
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId="password">
+                            <Form.Group controlId="password" className="formContainer">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control
                                     type="password"
@@ -74,8 +88,8 @@ const ProfileScreen = () => {
 
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId="confirmPassword">
-                                <Form.Label>Password</Form.Label>
+                            <Form.Group controlId="confirmPassword" className="formContainer">
+                                <Form.Label>Confirm Password</Form.Label>
                                 <Form.Control
                                     type="password"
                                     placeholder="Confirm Password"
@@ -83,8 +97,9 @@ const ProfileScreen = () => {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 >
                                 </Form.Control>
-                            </Form.Group>
-                            <Button type="submit" variant="primary">
+                            </Form.Group>{" "}
+
+                            <Button className="button" type="submit" variant="primary">
                                 Update
                             </Button>
                         </Form>
