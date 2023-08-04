@@ -6,6 +6,7 @@ import { useNavigate, Route, Routes } from "react-router-dom";
 import Portfolio from "./Portfolio";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import { useSelector } from "react-redux";
 
 const AddStocks = () => {
     const [stocks, setStock] = useState([]);
@@ -20,6 +21,8 @@ const AddStocks = () => {
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
     const [loading, setLoading] = useState(false);
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -64,7 +67,7 @@ const AddStocks = () => {
                         (Number(existingStock.buyPrice) *
                             Number(data.buyQuantity) +
                             Number(data.buyPrice) *
-                                Number(existingStock.buyQuantity)) /
+                            Number(existingStock.buyQuantity)) /
                         avgQty;
                     setData({
                         ...data,
@@ -134,15 +137,15 @@ const AddStocks = () => {
                 a[property] < b[property]
                     ? -1
                     : a[property] > b[property]
-                    ? 1
-                    : 0;
+                        ? 1
+                        : 0;
             return result * sortOrder;
         };
     }
 
     // to fetch portfolio from db
     const fetchPortfolio = async () => {
-        const userId = "647f3e52b0e7bb876995c354";
+        const userId = userInfo._id;
 
         try {
             const data = await axios.get(
