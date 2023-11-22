@@ -441,7 +441,7 @@ const Portfolio = () => {
                         centered
                     >
                         <Modal.Header closeButton>
-                            <Modal.Title>Modal heading</Modal.Title>
+                            <Modal.Title>Edit Stock</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form

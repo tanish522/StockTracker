@@ -13,8 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import { useNavigate } from "react-router";
 
-
-var Link = require("react-router-dom").Link;
+// var Link = require("react-router-dom").Link;
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("");
@@ -60,7 +59,7 @@ const LoginScreen = () => {
                             </ErrorMessage>
                         )}
 
-                        {loading && <Loading />}
+                        {isLoading && <Loading />}
                         <h2 className="text-uppercase text-center mb-5">
                             Enter Login Details
                         </h2>
